@@ -1,0 +1,13 @@
+{
+  "manifest_version": 2,
+  "name": "are.na dre.am stre.am",
+  "author": "Benjamin Forster",
+  "version": "1.0.0",
+  "description": "Replace new tab screen with an are.na channel",
+  "icons": {
+  },
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "permissions": ["storage"]
+}
