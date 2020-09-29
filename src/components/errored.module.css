@@ -1,0 +1,17 @@
+.root {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: pink;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.indicator {
+    display: flex;
+    font-size: 7rem;
+    color: white;
+    text-transform: uppercase;
+}
