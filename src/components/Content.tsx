@@ -32,14 +32,34 @@ function useImageLoader(src?: string) {
   };
 }
 
+function ImageElement({ image }: { image: HTMLImageElement }) {
+  const [display, setDisplay] = React.useState(false);
+  React.useEffect(() => {
+    const timeout = setTimeout(() => setDisplay(true), 0);
+    return () => clearTimeout(timeout);
+  }, []);
+  if (image.height === 0) return null;
+  const ratio = image.width / image.height;
+  const style =
+    ratio > 1
+      ? { maxWidth: '100%', width: image.width }
+      : { maxHeight: '100%', height: image.height };
+
+  return <img alt="main content" src={image.src} style={style} className={clsx(styles.image, display && styles.show) }/>;
+}
+
 export function Content({ data }: { data?: StreamData | null }) {
   const { image, loading } = useImageLoader(data?.image);
   return (
     <div className={styles.root}>
-      <div className={clsx(styles.container)}>
-        {image && <img alt="main content" src={image?.src} />}
-        <div className={styles.loader} style={{ opacity: loading ? 1 : 0 }}>
-          <div className={styles.fill} />
+      <div className={styles.outerContainer}>
+        <div className={clsx(styles.container)}>
+          <div className={styles.innerContainer}>
+            {image && <ImageElement image={image} />}
+            <div className={styles.loader} style={{ opacity: loading ? 1 : 0 }}>
+              <div className={styles.fill} />
+            </div>
+          </div>
         </div>
       </div>
     </div>

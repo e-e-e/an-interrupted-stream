@@ -10,21 +10,20 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
+  "env": {
+    "browser": true,
+    "webextensions": true
+  },
   "rules": {
     "array-callback-return": "off",
-    "@typescript-eslint/camelcase": [
-      "error",
-      {
-        "properties": "never"
-      }
-    ],
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "prettier/prettier": "warn",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": [
-      "warn", {
+      "warn",
+      {
         "additionalHooks": "useRecoilCallback"
       }
     ]

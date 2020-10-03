@@ -7,23 +7,50 @@
     align-items: center;
 }
 
-.container {
+.outerContainer {
     position: relative;
-    background: white;
-    border: grey thin solid;
     width: 900px;
-    height: 900px;
+    padding: 10px;
+}
+.innerContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.container {
+    position: relative;
+    background: white;
+    border: grey thin solid;
+    max-width: 900px;
+    width: 100%;
+    height: 0px;
+    padding-top: 100%;
+}
+
 .loader {
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     transition: opacity 0.5s linear;
 }
+
+.image {
+    opacity: 0;
+    transition: opacity 500ms ease-out;
+}
+
+.show {
+    opacity: 1;
+}
+
 
 .fill {
     background: grey;

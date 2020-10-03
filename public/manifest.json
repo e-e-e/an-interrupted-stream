@@ -4,10 +4,14 @@
   "author": "Benjamin Forster",
   "version": "1.0.0",
   "description": "Replace new tab screen with an are.na channel",
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
   "icons": {
   },
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
-  "permissions": ["storage"]
+  "permissions": ["storage", "alarms"]
 }

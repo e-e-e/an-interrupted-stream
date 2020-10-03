@@ -1,39 +1,28 @@
 import React from 'react';
-import { ArenaService, ConnectionApiType } from 'arena-ts';
-import { BlockApiType, ChannelApiType } from 'arena-ts/dist/arena_api_types';
 import { Errored } from './components/Errored';
 import { Content, StreamData } from './components/Content';
+import { ContentService } from './services/content';
+import {CHANNEL_DATA_CACHE_KEY} from "./constants";
 
-function isBlock(
-  data: Exclude<ChannelApiType['contents'], null>[0]
-): data is BlockApiType & ConnectionApiType {
-  return data.base_class === 'Block';
+async function getContent(arena: ContentService, channel: string): Promise<readonly StreamData[]>  {
+  const cached = localStorage.getItem(CHANNEL_DATA_CACHE_KEY)
+  if (!cached) {
+    const data = await arena.getContent(channel)
+    localStorage.setItem(CHANNEL_DATA_CACHE_KEY, JSON.stringify(data));
+    return data;
+  }
+  return JSON.parse(cached)
 }
 
-function channelToData(data: ChannelApiType): StreamData[] {
-  return (
-    data.contents
-      ?.filter(isBlock)
-      .filter((block) => block.class === 'Image')
-      .map((block) => {
-        return {
-          image: block.image?.large.url,
-        };
-      }) ?? []
-  );
-}
-
-function useArenaStream(arena: ArenaService, channel: string) {
+function useArenaStream(arena: ContentService, channel: string) {
   const [loading, setLoading] = React.useState(true);
   const [failed, setFailed] = React.useState(false);
   const [data, setData] = React.useState<StreamData | null>(null);
   React.useEffect(() => {
     setLoading(true);
-    arena
-      .channel(channel)
+    getContent(arena, channel)
       .then((data) => {
-        const streamData = channelToData(data);
-        const items = streamData.filter((d) => d.image);
+        const items = data.filter((d) => d.image);
         const index = Math.floor(Math.random() * items.length);
         setData(items[index]);
         setLoading(false);
@@ -51,7 +40,7 @@ function useArenaStream(arena: ArenaService, channel: string) {
   };
 }
 
-function App({ arena }: { arena: ArenaService }) {
+function App({ arena }: { arena: ContentService }) {
   const { failed, data } = useArenaStream(arena, 'rocks-not-nature');
   return (
     <div className="App">
