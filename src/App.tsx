@@ -1,20 +1,37 @@
 import React from 'react';
 import { Errored } from './components/Errored';
 import { Content } from './components/Content';
-import { ContentService, StreamData } from './services/content';
-import { CHANNEL_DATA_CACHE_KEY } from './constants';
+import { ContentData, ContentService, StreamData } from './services/content';
+import { CHANNEL_DATA_CACHE_KEY, REFRESH_TIME_BUFFER_MS } from './constants';
+
+async function getFreshContent(
+  arena: ContentService,
+  channel: string
+): Promise<readonly StreamData[]> {
+  const data = await arena.getContent(channel);
+  localStorage.setItem(CHANNEL_DATA_CACHE_KEY, JSON.stringify(data));
+  return data.data;
+}
 
 async function getContent(
   arena: ContentService,
   channel: string
 ): Promise<readonly StreamData[]> {
   const cached = localStorage.getItem(CHANNEL_DATA_CACHE_KEY);
-  if (!cached) {
-    const data = await arena.getContent(channel);
-    localStorage.setItem(CHANNEL_DATA_CACHE_KEY, JSON.stringify(data));
-    return data;
+  if (!cached) return getFreshContent(arena, channel);
+  try {
+    const content = JSON.parse(cached) as ContentData;
+    const now = Date.now();
+    if (
+      content.channel === channel &&
+      now < content.updated + REFRESH_TIME_BUFFER_MS
+    ) {
+      return content.data;
+    }
+  } catch (e) {
+    console.error(e);
   }
-  return JSON.parse(cached);
+  return getFreshContent(arena, channel);
 }
 
 function useArenaStream(arena: ContentService, channel: string) {

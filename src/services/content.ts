@@ -5,6 +5,12 @@ export type StreamData = {
   image: string | undefined;
 };
 
+export type ContentData = {
+  channel: string;
+  data: StreamData[];
+  updated: number;
+};
+
 function isBlock(
   data: Exclude<ChannelApiType['contents'], null>[0]
 ): data is BlockApiType & ConnectionApiType {
@@ -15,7 +21,7 @@ function channelToData(data: ChannelApiType): StreamData[] {
   return (
     data.contents
       ?.filter(isBlock)
-      .filter((block) => block.class === 'Image')
+      .filter((block) => block.class === 'Image' && block.image)
       .map((block) => {
         return {
           image: block.image?.large.url,
@@ -25,14 +31,19 @@ function channelToData(data: ChannelApiType): StreamData[] {
 }
 
 export interface ContentService {
-  getContent(channel: string): Promise<readonly StreamData[]>;
+  getContent(channel: string): Promise<ContentData>;
 }
 
 export class ContentClient implements ContentService {
   constructor(private readonly arenaService: ArenaService) {}
 
-  async getContent(channel: string): Promise<readonly StreamData[]> {
+  async getContent(channel: string): Promise<ContentData> {
     const data = await this.arenaService.channel(channel);
-    return channelToData(data);
+
+    return {
+      channel,
+      data: channelToData(data),
+      updated: Date.now(),
+    };
   }
 }

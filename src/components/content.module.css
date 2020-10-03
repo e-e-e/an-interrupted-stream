@@ -10,8 +10,10 @@
 .outerContainer {
     position: relative;
     width: 900px;
+    width: min(900px, 90vh);
     padding: 10px;
 }
+
 .innerContainer {
     position: absolute;
     top: 0;
