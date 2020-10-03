@@ -1,6 +1,9 @@
 import { BlockApiType, ChannelApiType } from 'arena-ts/dist/arena_api_types';
 import { ArenaService, ConnectionApiType } from 'arena-ts';
-import { StreamData } from '../components/Content';
+
+export type StreamData = {
+  image: string | undefined;
+};
 
 function isBlock(
   data: Exclude<ChannelApiType['contents'], null>[0]

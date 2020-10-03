@@ -1,17 +1,20 @@
 import React from 'react';
 import { Errored } from './components/Errored';
-import { Content, StreamData } from './components/Content';
-import { ContentService } from './services/content';
-import {CHANNEL_DATA_CACHE_KEY} from "./constants";
+import { Content } from './components/Content';
+import { ContentService, StreamData } from './services/content';
+import { CHANNEL_DATA_CACHE_KEY } from './constants';
 
-async function getContent(arena: ContentService, channel: string): Promise<readonly StreamData[]>  {
-  const cached = localStorage.getItem(CHANNEL_DATA_CACHE_KEY)
+async function getContent(
+  arena: ContentService,
+  channel: string
+): Promise<readonly StreamData[]> {
+  const cached = localStorage.getItem(CHANNEL_DATA_CACHE_KEY);
   if (!cached) {
-    const data = await arena.getContent(channel)
+    const data = await arena.getContent(channel);
     localStorage.setItem(CHANNEL_DATA_CACHE_KEY, JSON.stringify(data));
     return data;
   }
-  return JSON.parse(cached)
+  return JSON.parse(cached);
 }
 
 function useArenaStream(arena: ContentService, channel: string) {

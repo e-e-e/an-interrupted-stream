@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
 import styles from './content.module.css';
 import clsx from 'clsx';
-
-export type StreamData = {
-  image: string | undefined;
-};
+import {StreamData} from "../services/content";
 
 async function loadImage(src: string) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
