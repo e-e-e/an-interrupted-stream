@@ -2235,10 +2235,10 @@ aproba@^1.1.1:
   resolved "https://registry.yarnpkg.com/aproba/-/aproba-1.2.0.tgz#6802e6264efd18c790a1b0d517f0f2627bf2c94a"
   integrity sha512-Y9J6ZjXtoYh8RnXVCMOU/ttDmk1aBjunq9vO0ta5x85WDQiQfUF9sIPBITdbiiIVcBo03Hi3jMxigBtsddlXRw==
 
-arena-ts@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/arena-ts/-/arena-ts-0.0.4.tgz#86cba5201d70673f1694e3157b6b6a3a3b4efb18"
-  integrity sha512-48SgYJUOiuk9f34VAQCxoDTY23AfxXRaeteFZGftQT8Fa13ya6sICFQBgtS/+rJbCbwlrKkAEyxdUJkXlsPB0A==
+arena-ts@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/arena-ts/-/arena-ts-0.0.6.tgz#dc6d51b7f6fd595b31a319700f8d3c8c0676a3b6"
+  integrity sha512-jbSJnIDvRQveCpD85/WOFeezAJg+q82sI5ajqA8yVaLRbbj/kFyI6hkOHJ3IldAztP6BCQapZZttHUvvW3bnew==
 
 argparse@^1.0.7:
   version "1.0.10"

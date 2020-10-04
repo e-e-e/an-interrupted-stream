@@ -4,12 +4,14 @@ import './index.css';
 import App from './App';
 import { ArenaClient } from 'arena-ts';
 import { ContentClient } from './services/content';
+import { getOptions } from './options';
 
-const arena = new ContentClient(new ArenaClient());
+const { token, channel } = getOptions();
+const arena = new ContentClient(new ArenaClient({ token }));
 
 ReactDOM.render(
   <React.StrictMode>
-    <App arena={arena} />
+    <App arena={arena} channel={channel} />
   </React.StrictMode>,
   document.getElementById('root')
 );
