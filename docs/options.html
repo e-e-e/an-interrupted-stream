@@ -1,18 +1,57 @@
 <!DOCTYPE html>
 <html>
-<head><title>An interrupted stream has options</title></head>
+<head>
+    <title>An interrupted stream has options</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 1rem;
+        }
+
+        div {
+            margin: 2rem 0;
+        }
+        .input {
+            text-align: left;
+        }
+        img {
+            height: 128px;
+        }
+        .content {
+            text-align: center;
+            width: 300px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
 <body>
+<div class="content">
+<img src="icon_256.png" />
 
-<label>
-    Channel: <input id="channel" type="text" />
-</label>
-<label>
-    Auth Token: <input id="token" type="text" />
-</label>
-
+<div class="input">
+    <label>
+        Channel: <input id="channel" type="text"/>
+    </label>
+    <br/>
+    <sub>The id of the channel to stream.</sub>
+    <br/>
+    <sub>Leave empty to subscribe to default channels.</sub>
+</div>
+<div class="input">
+    <label>
+        ApiToken: <input id="token" type="text"/>
+    </label>
+    <br/>
+    <sub>Your are.na api token. (Optional)</sub>
+    <br/>
+    <sub>Neccessary to access private channels.</sub>
+</div>
 <div id="status"></div>
-<button id="save">Save</button>
-
+<div class="submit">
+    <button id="save">Save</button>
+</div>
+<img src="icon_256.png" />
+    </div>
 <script src="options.js"></script>
 </body>
 </html>

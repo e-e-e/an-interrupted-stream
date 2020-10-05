@@ -1,3 +1,11 @@
-# are.na dre.am stre.am
+# an.interrupted.stream
 
-Nothing to see here.
+A browser extension to replace your new tab screen with content from an [are.na](are.ma) channel. 
+
+## Installation
+
+### Safari
+
+### Chrome
+
+### Firefox

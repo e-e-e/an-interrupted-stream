@@ -4,7 +4,6 @@ import { Content } from './components/Content';
 import { ContentData, ContentService } from './services/content';
 import { CHANNEL_DATA_CACHE_KEY, REFRESH_TIME_BUFFER_MS } from './constants';
 import { BlockApiType, ChannelApiType } from 'arena-ts';
-import { getOptions } from './options';
 
 async function getFreshContent(
   arena: ContentService,

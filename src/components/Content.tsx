@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import styles from './content.module.css';
 import clsx from 'clsx';
-import { StreamData } from '../services/content';
 import { ChannelApiType, BlockApiType } from 'arena-ts';
 
 async function loadImage(src: string) {
@@ -65,7 +64,7 @@ function Block({ data }: { data: BlockApiType }) {
   const imageSrc = data?.image?.large.url;
   console.log(data);
   const { image, loading } = useImageLoader(imageSrc || undefined);
-  const link = data.class === "Link" ? data.source?.url : undefined;
+  const link = data.class === 'Link' ? data.source?.url : undefined;
   return (
     <Container href={link}>
       {image && <ImageElement image={image} />}
@@ -93,7 +92,6 @@ function AttachmentBlock({ data }: { data: BlockApiType }) {
 
         <h1 className={styles.pill}>{data.attachment?.extension}</h1>
       </div>
-
     </Container>
   );
 }
@@ -112,7 +110,6 @@ function TextBlock({ data }: { data: BlockApiType }) {
       window.innerHeight
     );
     const distance = height - (window.innerHeight - 10);
-    console.log('distance', distance, incRef.current.flipCount);
     const tooMany = incRef.current.flipCount > 10;
     if (distance > 100 && !tooMany) {
       if (incRef.current.dir > 0) {
@@ -132,10 +129,9 @@ function TextBlock({ data }: { data: BlockApiType }) {
       console.log('inc', incRef.current.inc, incRef.current.dir);
       setFontSize((size) => size + incRef.current.inc);
     } else {
-      console.log('display');
       setDisplay(true);
     }
-  }, [ref.current, fontSize]);
+  }, [fontSize]);
   if (!data.content_html) return null;
 
   return (
@@ -154,7 +150,7 @@ function ChannelOrBlock({ data }: { data: BlockApiType | ChannelApiType }) {
   switch (data.base_class) {
     case 'Block':
       switch (data.class) {
-        case "Attachment":
+        case 'Attachment':
           return <AttachmentBlock data={data} />;
         case 'Text':
           return <TextBlock data={data} />;
@@ -183,18 +179,11 @@ function Container({
   );
 }
 
-function getLink(data: BlockApiType | ChannelApiType | null) {
-  if (!data) return undefined;
-  return data?.base_class === 'Channel'
-    ? `https://are.na/${data.user_id}/${data.slug}`
-    : `https://are.na/block/${data.id}`;
-}
-
 export function Content({
   data,
 }: {
   data: BlockApiType | ChannelApiType | null;
 }) {
-  if (!data) return null;
+  if (!data) return <Container />;
   return <ChannelOrBlock data={data} />;
 }

@@ -1,14 +1,19 @@
 {
   "manifest_version": 2,
-  "name": "are.na dre.am stre.am",
+  "name": "an.interrupted.stream",
   "author": "Benjamin Forster",
   "version": "1.0.0",
-  "description": "Replace new tab screen with an are.na channel",
+  "description": "Replace the new tab screen with blocks from an are.na channel",
   "background": {
     "scripts": ["background.js"],
     "persistent": false
   },
   "icons": {
+    "16": "icon_16.png",
+    "48":"icon_48.png",
+    "128": "icon_128.png",
+    "256": "icon_256.png",
+    "512": "icon_512.png"
   },
   "chrome_url_overrides": {
     "newtab": "index.html"
