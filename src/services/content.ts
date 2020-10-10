@@ -1,10 +1,6 @@
 import { ChannelApiType } from 'arena-ts/dist/arena_api_types';
 import { ArenaService } from 'arena-ts';
 
-export type StreamData = {
-  image: string | undefined;
-};
-
 export type ContentData = {
   channel: string;
   data: ChannelApiType['contents'];

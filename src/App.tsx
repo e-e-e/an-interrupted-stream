@@ -2,7 +2,11 @@ import React from 'react';
 import { Errored } from './components/Errored';
 import { Content } from './components/Content';
 import { ContentData, ContentService } from './services/content';
-import { CHANNEL_DATA_CACHE_KEY, REFRESH_TIME_BUFFER_MS } from './constants';
+import {
+  CHANNEL_DATA_CACHE_KEY,
+  LAST_SEEN_KEY,
+  REFRESH_TIME_BUFFER_MS,
+} from './constants';
 import { BlockApiType, ChannelApiType } from 'arena-ts';
 
 async function getFreshContent(
@@ -23,6 +27,9 @@ async function getContent(
   try {
     const content = JSON.parse(cached) as ContentData;
     const now = Date.now();
+    if (content.channel !== channel) {
+      localStorage.removeItem(LAST_SEEN_KEY);
+    }
     if (
       content.channel === channel &&
       now < content.updated + REFRESH_TIME_BUFFER_MS
@@ -35,6 +42,21 @@ async function getContent(
   return getFreshContent(arena, channel);
 }
 
+function getNext(data: ChannelApiType['contents']): BlockApiType | ChannelApiType | null {
+  if (!data || data.length === 0) return null;
+  const lastSeen = localStorage.getItem(LAST_SEEN_KEY);
+  if (lastSeen == null) {
+    const lastItem = data[data.length - 1];
+    localStorage.setItem(LAST_SEEN_KEY, lastItem.id.toString(10));
+    return lastItem;
+  }
+  const lastSeenIndex = data.findIndex(x => x.id.toString(10) === lastSeen);
+  const nextIndex = lastSeenIndex > 0 ? lastSeenIndex - 1 : data.length - 1
+  const nextItem = data[nextIndex];
+  localStorage.setItem(LAST_SEEN_KEY, nextItem.id.toString(10));
+  return nextItem;
+}
+
 function useArenaStream(arena: ContentService, channel: string) {
   const [loading, setLoading] = React.useState(true);
   const [failed, setFailed] = React.useState(false);
@@ -45,13 +67,7 @@ function useArenaStream(arena: ContentService, channel: string) {
     setLoading(true);
     getContent(arena, channel)
       .then((data) => {
-        if (!data || data.length === 0) {
-          setLoading(false);
-          return;
-        }
-        const index = Math.floor(Math.random() * data.length);
-        // setData(data[5]);
-        setData(data[index]);
+        setData(getNext(data));
         setLoading(false);
       })
       .catch((err) => {

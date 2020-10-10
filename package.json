@@ -1,6 +1,6 @@
 {
-  "name": "arena-dream-stream",
-  "version": "0.1.0",
+  "name": "an.interrupted.stream",
+  "version": "0.0.1",
   "homepage": ".",
   "private": true,
   "dependencies": {

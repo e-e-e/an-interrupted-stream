@@ -100,33 +100,26 @@ function TextBlock({ data }: { data: BlockApiType }) {
   const ref = React.useRef<HTMLDivElement>(null);
   const [fontSize, setFontSize] = React.useState(2);
   const [display, setDisplay] = React.useState(false);
-  const incRef = React.useRef({ inc: 0.2, dir: 0, flipCount: 0 });
+  const incRef = React.useRef({ inc: 1.0, dir: 0, flipCount: 0 });
   React.useEffect(() => {
     const height = ref.current?.getBoundingClientRect().height;
     if (!height) return;
-
-    console.log(
-      ref.current?.getBoundingClientRect().height,
-      window.innerHeight
-    );
+    console.log('x', incRef.current.flipCount);
     const distance = height - (window.innerHeight - 10);
     const tooMany = incRef.current.flipCount > 10;
     if (distance > 100 && !tooMany) {
       if (incRef.current.dir > 0) {
-        incRef.current.inc *= 0.5;
+        incRef.current.inc *= 0.25;
         incRef.current.flipCount++;
       }
       incRef.current.dir = -1;
-
-      console.log('inc', incRef.current.inc, incRef.current.dir);
       setFontSize((size) => size - incRef.current.inc);
     } else if (distance < 40 && !tooMany) {
       if (incRef.current.dir < 0) {
-        incRef.current.inc *= 0.5;
+        incRef.current.inc *= 0.25;
         incRef.current.flipCount++;
       }
       incRef.current.dir = 1;
-      console.log('inc', incRef.current.inc, incRef.current.dir);
       setFontSize((size) => size + incRef.current.inc);
     } else {
       setDisplay(true);
