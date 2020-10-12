@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "an.interrupted.stream",
   "author": "Benjamin Forster",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Replace the new tab screen with blocks from an are.na channel",
   "background": {
     "scripts": ["background.js"],
