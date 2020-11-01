@@ -42,7 +42,9 @@ async function getContent(
   return getFreshContent(arena, channel);
 }
 
-function getNext(data: ChannelApiType['contents']): BlockApiType | ChannelApiType | null {
+function getNext(
+  data: ChannelApiType['contents']
+): BlockApiType | ChannelApiType | null {
   if (!data || data.length === 0) return null;
   const lastSeen = localStorage.getItem(LAST_SEEN_KEY);
   if (lastSeen == null) {
@@ -50,8 +52,8 @@ function getNext(data: ChannelApiType['contents']): BlockApiType | ChannelApiTyp
     localStorage.setItem(LAST_SEEN_KEY, lastItem.id.toString(10));
     return lastItem;
   }
-  const lastSeenIndex = data.findIndex(x => x.id.toString(10) === lastSeen);
-  const nextIndex = lastSeenIndex > 0 ? lastSeenIndex - 1 : data.length - 1
+  const lastSeenIndex = data.findIndex((x) => x.id.toString(10) === lastSeen);
+  const nextIndex = lastSeenIndex > 0 ? lastSeenIndex - 1 : data.length - 1;
   const nextItem = data[nextIndex];
   localStorage.setItem(LAST_SEEN_KEY, nextItem.id.toString(10));
   return nextItem;
