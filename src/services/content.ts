@@ -21,7 +21,9 @@ export class ContentClient implements ContentService {
   constructor(private readonly arenaService: ArenaService) {}
 
   async getContent(channel: string): Promise<ContentData> {
-    const data = await this.arenaService.channel(channel);
+    const data = await this.arenaService.channel(channel, {
+      forceRefresh: true,
+    });
     return {
       channel,
       data: data.contents,
