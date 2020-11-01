@@ -1,7 +1,6 @@
 .root {
     width: 100vw;
     height: 100vh;
-    background: white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -92,4 +91,16 @@
     background: lightgray;
     text-transform: uppercase;
     padding: 10px;
+}
+
+.frame {
+    position: absolute;
+}
+
+.past {
+    transform: translateX(calc(min(900px, 90vh) * -1.2));
+}
+
+.future {
+    transform: translateX(calc(min(900px, 90vh) * 1.2));
 }

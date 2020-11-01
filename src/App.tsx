@@ -1,13 +1,13 @@
 import React from 'react';
 import { Errored } from './components/Errored';
-import { Content } from './components/Content';
+import { Content, StreamData } from './components/Content';
 import { ContentData, ContentService } from './services/content';
 import {
   CHANNEL_DATA_CACHE_KEY,
   LAST_SEEN_KEY,
   REFRESH_TIME_BUFFER_MS,
 } from './constants';
-import { BlockApiType, ChannelApiType } from 'arena-ts';
+import { ChannelApiType } from 'arena-ts';
 
 async function getFreshContent(
   arena: ContentService,
@@ -42,34 +42,39 @@ async function getContent(
   return getFreshContent(arena, channel);
 }
 
-function getNext(
-  data: ChannelApiType['contents']
-): BlockApiType | ChannelApiType | null {
+function getNextIndex(data: ChannelApiType['contents']): StreamData | null {
   if (!data || data.length === 0) return null;
   const lastSeen = localStorage.getItem(LAST_SEEN_KEY);
   if (lastSeen == null) {
-    const lastItem = data[data.length - 1];
+    const lastIndex = data.length - 1;
+    const lastItem = data[lastIndex];
     localStorage.setItem(LAST_SEEN_KEY, lastItem.id.toString(10));
-    return lastItem;
+    return {
+      past: null,
+      now: lastItem,
+      future: lastIndex !== 0 ? data[lastIndex - 1] : null,
+    };
   }
   const lastSeenIndex = data.findIndex((x) => x.id.toString(10) === lastSeen);
   const nextIndex = lastSeenIndex > 0 ? lastSeenIndex - 1 : data.length - 1;
   const nextItem = data[nextIndex];
   localStorage.setItem(LAST_SEEN_KEY, nextItem.id.toString(10));
-  return nextItem;
+  return {
+    past: data[lastSeenIndex],
+    now: nextItem,
+    future: nextIndex !== 0 ? data[nextIndex - 1] : null,
+  };
 }
 
 function useArenaStream(arena: ContentService, channel: string) {
   const [loading, setLoading] = React.useState(true);
   const [failed, setFailed] = React.useState(false);
-  const [data, setData] = React.useState<BlockApiType | ChannelApiType | null>(
-    null
-  );
+  const [data, setData] = React.useState<StreamData | null>(null);
   React.useEffect(() => {
     setLoading(true);
     getContent(arena, channel)
       .then((data) => {
-        setData(getNext(data));
+        setData(getNextIndex(data));
         setLoading(false);
       })
       .catch((err) => {

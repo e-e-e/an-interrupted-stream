@@ -145,11 +145,30 @@ function Container({
   );
 }
 
-export function Content({
-  data,
-}: {
-  data: BlockApiType | ChannelApiType | null;
-}) {
+type BlockOrChannelOrNot = BlockApiType | ChannelApiType | null;
+export type StreamData = {
+  past: BlockOrChannelOrNot;
+  now: BlockOrChannelOrNot;
+  future: BlockOrChannelOrNot;
+};
+
+export function Content({ data }: { data: StreamData | null }) {
   if (!data) return <Container />;
-  return <ChannelOrBlock data={data} />;
+  return (
+    <>
+      {data.past ? (
+        <div className={clsx(styles.frame, styles.past)}>
+          <ChannelOrBlock data={data.past} />
+        </div>
+      ) : null}
+      <div className={styles.frame}>
+        {data.now ? <ChannelOrBlock data={data.now} /> : <Container />}
+      </div>
+      {data.future ? (
+        <div className={clsx(styles.frame, styles.future)}>
+          <ChannelOrBlock data={data.future} />
+        </div>
+      ) : null}
+    </>
+  );
 }
