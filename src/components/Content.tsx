@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import styles from './content.module.css';
 import clsx from 'clsx';
 import { ChannelApiType, BlockApiType } from 'arena-ts';
+import { FitContent } from './FitContent';
 
 async function loadImage(src: string) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
@@ -97,44 +98,16 @@ function AttachmentBlock({ data }: { data: BlockApiType }) {
 }
 
 function TextBlock({ data }: { data: BlockApiType }) {
-  const ref = React.useRef<HTMLDivElement>(null);
-  const [fontSize, setFontSize] = React.useState(2);
-  const [display, setDisplay] = React.useState(false);
-  const incRef = React.useRef({ inc: 1.0, dir: 0, flipCount: 0 });
-  React.useEffect(() => {
-    const height = ref.current?.getBoundingClientRect().height;
-    if (!height) return;
-    console.log('x', incRef.current.flipCount);
-    const distance = height - (window.innerHeight - 10);
-    const tooMany = incRef.current.flipCount > 10;
-    if (distance > 100 && !tooMany) {
-      if (incRef.current.dir > 0) {
-        incRef.current.inc *= 0.25;
-        incRef.current.flipCount++;
-      }
-      incRef.current.dir = -1;
-      setFontSize((size) => size - incRef.current.inc);
-    } else if (distance < 40 && !tooMany) {
-      if (incRef.current.dir < 0) {
-        incRef.current.inc *= 0.25;
-        incRef.current.flipCount++;
-      }
-      incRef.current.dir = 1;
-      setFontSize((size) => size + incRef.current.inc);
-    } else {
-      setDisplay(true);
-    }
-  }, [fontSize]);
   if (!data.content_html) return null;
 
   return (
     <Container>
-      <div
-        className={clsx(styles.textBlock, !display && styles.hidden)}
-        ref={ref}
-        style={{ position: 'fixed', fontSize: `${fontSize}rem` }}
-        dangerouslySetInnerHTML={{ __html: data.content_html }}
-      />
+      <FitContent>
+        <div
+          className={styles.textBlock}
+          dangerouslySetInnerHTML={{ __html: data.content_html }}
+        />
+      </FitContent>
     </Container>
   );
 }
