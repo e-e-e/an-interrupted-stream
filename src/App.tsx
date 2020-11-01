@@ -60,7 +60,7 @@ function getNextIndex(data: ChannelApiType['contents']): StreamData | null {
   const nextItem = data[nextIndex];
   localStorage.setItem(LAST_SEEN_KEY, nextItem.id.toString(10));
   return {
-    past: data[lastSeenIndex],
+    past: nextIndex !== data.length - 1 ? data[lastSeenIndex] : null,
     now: nextItem,
     future: nextIndex !== 0 ? data[nextIndex - 1] : null,
   };
